@@ -23,9 +23,16 @@ RUN apt-get -qq update \
 
 # Download the grpc health probe
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
-RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
-    wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
-    chmod +x /bin/grpc_health_probe
+# RUN GRPC_HEALTH_PROBE_VERSION=v0.4.14 && \
+#     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+#     chmod +x /bin/grpc_health_probe
+COPY ./grpc_health_probe/grpc_health_probe /bin
+RUN chmod +x /bin/grpc_health_probe
+
+RUN pip install -U pip
+RUN pip install --upgrade google-auth
+RUN pip config set global.index-url http://mirrors.aliyun.com/pypi/simple
+RUN pip config set install.trusted-host mirrors.aliyun.com
 
 # get packages
 COPY requirements.txt .

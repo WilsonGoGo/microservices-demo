@@ -18,6 +18,10 @@ FROM base as builder
 
 COPY requirements.txt .
 
+RUN pip install -U pip
+RUN pip config set global.index-url http://mirrors.aliyun.com/pypi/simple
+RUN pip config set install.trusted-host mirrors.aliyun.com
+
 RUN pip install --prefix="/install" -r requirements.txt
 
 FROM base
