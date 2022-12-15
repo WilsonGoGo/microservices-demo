@@ -18,6 +18,8 @@ using Grpc.Core;
 using Grpc.Health.V1;
 using static Grpc.Health.V1.Health;
 using cartservice.cartstore;
+using Serilog; // 使用Serilog
+
 
 namespace cartservice.services
 {
@@ -32,7 +34,8 @@ namespace cartservice.services
 
         public override Task<HealthCheckResponse> Check(HealthCheckRequest request, ServerCallContext context)
         {
-            Console.WriteLine ("Checking CartService Health");
+            Log.Information("Checking CartService Health");
+            // Console.WriteLine ("Checking CartService Health");
             return Task.FromResult(new HealthCheckResponse {
                 Status = _cartStore.Ping() ? HealthCheckResponse.Types.ServingStatus.Serving : HealthCheckResponse.Types.ServingStatus.NotServing
             });

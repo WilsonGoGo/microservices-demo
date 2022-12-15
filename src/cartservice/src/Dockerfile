@@ -28,6 +28,9 @@ COPY --from=builder /cartservice .
 EXPOSE 7070
 ENV DOTNET_EnableDiagnostics=0 \
     ASPNETCORE_URLS=http://*:7070
+RUN mkdir log
+RUN mkdir log/cartservice
+RUN chmod a=rwx log/cartservice
 USER 1000
 ENTRYPOINT ["/app/cartservice"]
 

@@ -17,6 +17,8 @@ using Google.Cloud.Spanner.Data;
 using Grpc.Core;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using Serilog; // 使用Serilog
+
 
 namespace cartservice.cartstore
 {
@@ -37,7 +39,8 @@ namespace cartservice.cartstore
             if (!string.IsNullOrEmpty(spannerConnectionString)) {
                 builder.DataSource = spannerConnectionString;
                 databaseString = builder.ToString();
-                Console.WriteLine($"Spanner connection string: ${databaseString}");
+                Log.Information($"Spanner connection string: ${databaseString}");
+                // Console.WriteLine($"Spanner connection string: ${databaseString}");
                 return;
             }
             if (string.IsNullOrEmpty(spannerInstanceId))
@@ -47,13 +50,15 @@ namespace cartservice.cartstore
             builder.DataSource =
                 $"projects/{spannerProjectId}/instances/{spannerInstanceId}/databases/{spannerDatabaseId}";
             databaseString = builder.ToString();
-            Console.WriteLine($"Built Spanner connection string: '{databaseString}'");
+            Log.Information($"Built Spanner connection string: '{databaseString}'");
+            // Console.WriteLine($"Built Spanner connection string: '{databaseString}'");
         }
 
 
         public async Task AddItemAsync(string userId, string productId, int quantity)
         {
-            Console.WriteLine($"AddItemAsync for {userId} called");
+            Log.Information($"AddItemAsync for {userId} called");
+            // Console.WriteLine($"AddItemAsync for {userId} called");
             try
             {
                 using SpannerConnection spannerConnection = new(databaseString);
@@ -104,7 +109,8 @@ namespace cartservice.cartstore
 
         public async Task<Hipstershop.Cart> GetCartAsync(string userId)
         {
-            Console.WriteLine($"GetCartAsync called for userId={userId}");
+            Log.Information($"GetCartAsync called for userId={userId}");
+            // Console.WriteLine($"GetCartAsync called for userId={userId}");
             Hipstershop.Cart cart = new();
             try
             {
@@ -144,7 +150,8 @@ namespace cartservice.cartstore
 
         public async Task EmptyCartAsync(string userId)
         {
-            Console.WriteLine($"EmptyCartAsync called for userId={userId}");
+            Log.Information($"EmptyCartAsync called for userId={userId}");
+            // Console.WriteLine($"EmptyCartAsync called for userId={userId}");
 
             try
             {

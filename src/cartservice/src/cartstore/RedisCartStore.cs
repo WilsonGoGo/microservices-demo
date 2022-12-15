@@ -18,6 +18,8 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Caching.Distributed;
 using Google.Protobuf;
+using Serilog; // 使用Serilog
+
 
 namespace cartservice.cartstore
 {
@@ -32,7 +34,8 @@ namespace cartservice.cartstore
 
         public async Task AddItemAsync(string userId, string productId, int quantity)
         {
-            Console.WriteLine($"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}");
+            Log.Information($"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}");
+            // Console.WriteLine($"AddItemAsync called with userId={userId}, productId={productId}, quantity={quantity}");
 
             try
             {
@@ -67,7 +70,8 @@ namespace cartservice.cartstore
 
         public async Task EmptyCartAsync(string userId)
         {
-            Console.WriteLine($"EmptyCartAsync called with userId={userId}");
+            Log.Information($"EmptyCartAsync called with userId={userId}");
+            // Console.WriteLine($"EmptyCartAsync called with userId={userId}");
 
             try
             {
@@ -82,7 +86,8 @@ namespace cartservice.cartstore
 
         public async Task<Hipstershop.Cart> GetCartAsync(string userId)
         {
-            Console.WriteLine($"GetCartAsync called with userId={userId}");
+            Log.Information($"GetCartAsync called with userId={userId}");
+            // Console.WriteLine($"GetCartAsync called with userId={userId}");
 
             try
             {

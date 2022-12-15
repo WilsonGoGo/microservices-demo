@@ -38,6 +38,10 @@ RUN mkdir -p /opt/cprof && \
 WORKDIR /app
 COPY --from=builder /app .
 
+RUN mkdir log
+RUN mkdir log/adservice
+RUN chmod a=rwx log/adservice
+
 EXPOSE 9555
 ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]
 
