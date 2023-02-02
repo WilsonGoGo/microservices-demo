@@ -15,7 +15,7 @@
 FROM golang:1.19.3-alpine@sha256:27a9653759f44afd08c94418307a26d2db9cf78af12933200bc2ca63c4844316 as builder
 RUN apk add --no-cache ca-certificates git
 RUN apk add build-base
-WORKDIR /src
+WORKDIR /app
 
 RUN go env -w GOPROXY=https://goproxy.cn
 
@@ -32,8 +32,8 @@ RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /checkoutservice .
 FROM alpine:3.17.0@sha256:c0d488a800e4127c334ad20d61d7bc21b4097540327217dfab52262adc02380c as without-grpc-health-probe-bin
 RUN apk add --no-cache ca-certificates
 
-WORKDIR /src
-COPY --from=builder /checkoutservice /src/checkoutservice
+WORKDIR /app
+COPY --from=builder /checkoutservice /app/checkoutservice
 
 # Definition of this variable is used by 'skaffold debug' to identify a golang binary.
 # Default behavior - a failure prints a stack trace for the current goroutine.
@@ -41,7 +41,7 @@ COPY --from=builder /checkoutservice /src/checkoutservice
 ENV GOTRACEBACK=single
 
 EXPOSE 5050
-ENTRYPOINT ["/src/checkoutservice"]
+ENTRYPOINT ["/app/checkoutservice"]
 
 FROM without-grpc-health-probe-bin
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
@@ -50,3 +50,7 @@ FROM without-grpc-health-probe-bin
 #     chmod +x /bin/grpc_health_probe
 COPY ./grpc_health_probe/grpc_health_probe /bin
 RUN chmod +x /bin/grpc_health_probe
+
+RUN mkdir log
+RUN mkdir log/checkoutservice
+RUN chmod a=rwx log/checkoutservice

@@ -31,8 +31,8 @@ RUN go build -gcflags="${SKAFFOLD_GO_GCFLAGS}" -o /go/bin/shippingservice .
 FROM alpine:3.17.0@sha256:c0d488a800e4127c334ad20d61d7bc21b4097540327217dfab52262adc02380c as without-grpc-health-probe-bin
 RUN apk add --no-cache ca-certificates
 
-WORKDIR /src
-COPY --from=builder /go/bin/shippingservice /src/shippingservice
+WORKDIR /app
+COPY --from=builder /go/bin/shippingservice /app/shippingservice
 ENV APP_PORT=50051
 
 # Definition of this variable is used by 'skaffold debug' to identify a golang binary.
@@ -40,8 +40,12 @@ ENV APP_PORT=50051
 # See https://golang.org/pkg/runtime/
 ENV GOTRACEBACK=single
 
+RUN mkdir log
+RUN mkdir log/shippingservice
+RUN chmod a=rwx log/shippingservice
+
 EXPOSE 50051
-ENTRYPOINT ["/src/shippingservice"]
+ENTRYPOINT ["/app/shippingservice"]
 
 FROM without-grpc-health-probe-bin
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe

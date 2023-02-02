@@ -19,6 +19,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net"
 	"os"
@@ -67,7 +68,22 @@ func init() {
 		},
 		TimestampFormat: time.RFC3339Nano,
 	}
-	log.Out = os.Stdout
+	// log.Out = os.Stdout
+	log.SetOutput(os.Stdout)
+
+	//设置output,默认为stderr,可以为任何io.Writer，比如文件*os.File
+	file, file_err := os.OpenFile("/app/log/productcatalogservice/log.txt", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	writers := []io.Writer{
+		file,
+		os.Stdout}
+	//同时写文件和屏幕
+	fileAndStdoutWriter := io.MultiWriter(writers...)
+	if file_err == nil {
+		log.SetOutput(fileAndStdoutWriter)
+	} else {
+		log.Info("failed to log to file.")
+	}
+
 	catalogMutex = &sync.Mutex{}
 	err := readCatalogFile(&cat)
 	if err != nil {

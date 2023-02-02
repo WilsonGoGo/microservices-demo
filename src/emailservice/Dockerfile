@@ -44,13 +44,17 @@ ENV PYTHONUNBUFFERED=1
 # Enable Profiler
 ENV ENABLE_PROFILER=1
 
-WORKDIR /email_server
+WORKDIR /app
 
 # Grab packages from builder
 COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
 
 # Add the application
 COPY . .
+
+RUN mkdir log
+RUN mkdir log/emailservice
+RUN chmod a=rwx log/emailservice
 
 EXPOSE 8080
 ENTRYPOINT [ "python", "email_server.py" ]

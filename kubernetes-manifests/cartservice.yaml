@@ -63,6 +63,15 @@ spec:
           periodSeconds: 10
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:7070", "-rpc-timeout=5s"]
+        volumeMounts:
+        - name: log
+          mountPath: /app/log
+      volumes:
+      - hostPath:
+          path: /root/log
+          type: DirectoryOrCreate
+        name: log
+  
 ---
 apiVersion: v1
 kind: Service

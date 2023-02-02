@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: nfs-pvc
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nfs-pvc
+    spec:
+      containers:
+      - name: cartservice
+        image: cartservice
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:                        #挂载容器中的目录到pvc nfs中的目录
+        - name: log
+          mountPath: /app/log
+      volumes:
+      - name: log
+        persistentVolumeClaim:              #指定pvc
+          claimName: pvc-nfs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nfs-pvc
+  labels:
+    app: nfs-pvc
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: web              #容器端口或名字
+  selector:
+    app: nfs-pvc

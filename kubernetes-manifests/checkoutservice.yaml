@@ -33,13 +33,13 @@ spec:
         runAsUser: 1000
       containers:
         - name: server
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - all
-            privileged: false
-            readOnlyRootFilesystem: true
+          # securityContext:
+          #   allowPrivilegeEscalation: false
+          #   capabilities:
+          #     drop:
+          #       - all
+          #   privileged: false
+          #   readOnlyRootFilesystem: true
           image: checkoutservice
           ports:
           - containerPort: 5050
