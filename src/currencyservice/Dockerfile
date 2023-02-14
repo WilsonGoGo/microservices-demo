@@ -27,7 +27,14 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=production
+# RUN npm config set registry http://registry.npmmirror.com
+# RUN npm config set registry http://mirrors.cloud.tencent.com/npm/
+# RUN npm config set registry https://registry.npmjs.org/
+# RUN npm install -g npm@latest
+# RUN npm install --only=production
+
+RUN npm install -g cnpm --registry=https://registry.npmmirror.com
+RUN cnpm install --only=production
 
 FROM base as without-grpc-health-probe-bin
 
