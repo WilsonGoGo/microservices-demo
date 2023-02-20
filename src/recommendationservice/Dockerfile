@@ -43,7 +43,11 @@ FROM base as without-grpc-health-probe-bin
 ENV PYTHONUNBUFFERED=1
 
 # get packages
-WORKDIR /recommendationservice
+WORKDIR /app
+
+RUN mkdir log
+RUN mkdir log/recommendationservice
+RUN chmod a=rwx log/recommendationservice
 
 # Grab packages from builder
 COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/

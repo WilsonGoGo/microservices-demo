@@ -8,9 +8,6 @@ plugins {
 repositories {
     mavenCentral()
     mavenLocal()
-    // maven {
-    //     url "http://maven.aliyun.com/nexus/content/groups/public"
-    // }
 }
 
 description = 'Ad Service'

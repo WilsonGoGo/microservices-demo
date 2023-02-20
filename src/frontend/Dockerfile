@@ -15,7 +15,7 @@
 FROM golang:1.19.3-alpine@sha256:27a9653759f44afd08c94418307a26d2db9cf78af12933200bc2ca63c4844316 as builder
 RUN apk add --no-cache ca-certificates git
 RUN apk add build-base
-WORKDIR /src
+WORKDIR /app
 
 RUN go env -w GOPROXY=https://goproxy.cn
 
@@ -32,8 +32,8 @@ FROM alpine:3.17.0@sha256:c0d488a800e4127c334ad20d61d7bc21b4097540327217dfab5226
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk add --no-cache ca-certificates \
     busybox-extras net-tools bind-tools
-WORKDIR /src
-COPY --from=builder /go/bin/frontend /src/server
+WORKDIR /app
+COPY --from=builder /go/bin/frontend /app/server
 COPY ./templates ./templates
 COPY ./static ./static
 
@@ -42,5 +42,9 @@ COPY ./static ./static
 # See https://golang.org/pkg/runtime/
 ENV GOTRACEBACK=single
 
+RUN mkdir log
+RUN mkdir log/frontend
+RUN chmod a=rwx log/frontend
+
 EXPOSE 8080
-ENTRYPOINT ["/src/server"]
+ENTRYPOINT ["/app/server"]

@@ -33,9 +33,11 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
 def getJSONLogger(name):
   logger = logging.getLogger(name)
   handler = logging.StreamHandler(sys.stdout)
+  file_handler = logging.FileHandler("/app/log/recommendationservice/log.txt")
   formatter = CustomJsonFormatter('%(timestamp)s %(severity)s %(name)s %(message)s')
   handler.setFormatter(formatter)
   logger.addHandler(handler)
+  logger.addHandler(file_handler)
   logger.setLevel(logging.INFO)
   logger.propagate = False
   return logger
