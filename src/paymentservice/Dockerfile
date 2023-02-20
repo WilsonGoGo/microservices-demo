@@ -39,6 +39,13 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+RUN umask 002
+RUN mkdir log
+RUN mkdir log/paymentservice
+RUN chmod a=rwx log/paymentservice
+# RUN touch log/paymentservice/log.txt
+# USER 1000
+
 EXPOSE 50051
 
 ENTRYPOINT [ "node", "index.js" ]

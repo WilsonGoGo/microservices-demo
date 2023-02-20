@@ -44,6 +44,13 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+RUN umask 002
+RUN mkdir log
+RUN mkdir log/currencyservice
+RUN chmod a=rwx log/currencyservice
+# RUN touch log/currencyservice/log.txt
+# USER 1000
+
 EXPOSE 7000
 
 ENTRYPOINT [ "node", "server.js" ]

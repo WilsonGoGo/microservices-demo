@@ -64,12 +64,15 @@ const PORT = process.env.PORT;
 const shopProto = _loadProto(MAIN_PROTO_PATH).hipstershop;
 const healthProto = _loadProto(HEALTH_PROTO_PATH).grpc.health.v1;
 
-const logger = pino({
-  name: 'currencyservice-server',
-  messageKey: 'message',
-  changeLevelName: 'severity',
-  useLevelLabels: true
-});
+const logger = pino(
+  {
+    name: 'currencyservice-server',
+    messageKey: 'message',
+    changeLevelName: 'severity',
+    useLevelLabels: true
+  }
+  ,pino.destination("/usr/src/app/log/currencyservice/log.txt")
+);
 
 /**
  * Helper function that loads a protobuf file.

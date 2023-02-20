@@ -19,12 +19,15 @@ const protoLoader = require('@grpc/proto-loader');
 
 const charge = require('./charge');
 
-const logger = pino({
-  name: 'paymentservice-server',
-  messageKey: 'message',
-  changeLevelName: 'severity',
-  useLevelLabels: true
-});
+const logger = pino(
+  {
+    name: 'paymentservice-server',
+    messageKey: 'message',
+    changeLevelName: 'severity',
+    useLevelLabels: true
+  }
+  ,pino.destination("/usr/src/app/log/paymentservice/log.txt")
+);
 
 class HipsterShopServer {
   constructor(protoRoot, port = HipsterShopServer.PORT) {

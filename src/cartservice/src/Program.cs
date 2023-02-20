@@ -30,11 +30,11 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .WriteTo.Console(outputTemplate: OUTPUT_TEMPLATE)
     .WriteTo.File(
-       @"/app/log/cartservice/log_.txt",
-       rollingInterval: RollingInterval.Day,
-       fileSizeLimitBytes: 10 * 1024 * 1024,
-       retainedFileCountLimit: 2,
-       rollOnFileSizeLimit: true,
+       @"/app/log/cartservice/log.txt",
+    //    rollingInterval: RollingInterval.Day,
+    //    fileSizeLimitBytes: 10 * 1024 * 1024,
+    //    retainedFileCountLimit: 2,
+    //    rollOnFileSizeLimit: true,
        shared: true,
        flushToDiskInterval: TimeSpan.FromSeconds(1))
     .CreateLogger();
