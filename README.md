@@ -46,7 +46,7 @@ sudo mv skaffold /usr/local/bin
 git clone https://github.com/WilsonGoGo/microservices-demo.git
 cd microservices-demo
 
-# 启动minikube
+# 启动minikube, 首次启动需拉取镜像，可能花费较长时间
 minikube start --kubernetes-version=v1.23.8 \
     --image-mirror-country='cn' \
     --image-repository='registry.cn-hangzhou.aliyuncs.com/google_containers' \
@@ -57,5 +57,10 @@ skaffold run
     
 # 暴露端口
 kubectl --address 0.0.0.0 port-forward deployment/frontend 8080:8080
+
+# 待项目部署成功后运行一段时间，再执行采集日志的脚本
+cd getLogs
+chmod +x getLogs.sh
+./getLogs.sh
 ```
 
